@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
-
 package proto;
 
 message Image {
@@ -24,7 +22,6 @@ message PlayerStats {
     }
     repeated PlayerStat stats = 1;
 }
-
 
 service OcrService {
     rpc GetStatsByImage(Image) returns (PlayerStats);
