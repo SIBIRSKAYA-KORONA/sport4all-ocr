@@ -16,7 +16,6 @@ vertical_kernel = cv2.getStructuringElement(
     cv2.MORPH_RECT, (1, np.array(img).shape[1] // 100))
 eroded_image = cv2.erode(img_bin_otsu, vertical_kernel, iterations=3)
 vertical_lines = cv2.dilate(eroded_image, vertical_kernel, iterations=3)
-print(vertical_lines)
 
 hor_kernel = cv2.getStructuringElement(
     cv2.MORPH_RECT, (np.array(img).shape[1] // 100, 1))
@@ -84,53 +83,50 @@ for i in range(len(rows)):
 # retrieving the center of each column
 centers = np.array([int(cell[0] + cell[2] / 2) for cell in rows[max_cols_idx]])
 centers.sort()
-print('centers: ', centers)
 
-final_boxes = []
+table = []
 for row in rows:
-    res = []
-    for k in range(max_cols):
-        res.append([])
+    sort_row = [[] for k in range(max_cols)]
 
     for cell in row:
         diff = abs(centers - (cell[0] + cell[2] / 4))
         idx = list(diff).index(min(diff))
-        res[idx].append(cell)
+        sort_row[idx] = cell
 
-    print("len res: ", len(res))
-    final_boxes.append(res)
+    table.append(sort_row)
 
 # from every single image-based cell/box the strings are extracted via pytesseract and stored in a list
 
-for box in final_boxes:
-    cell_idx = 0
-    for row in box:
-        cell_idx += 1
-        for cell in row:
-            y, x, w, h = cell[0], cell[1], cell[2], cell[3]
-            final_img = bitnot[x:x+h, y:y+w]
+name_column = 1
+point_column = 21
 
-            kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 1))
-            border = cv2.copyMakeBorder(
-                final_img, 2, 2, 2, 2, cv2.BORDER_CONSTANT, value=[255, 255])
-            resizing = cv2.resize(border, None, fx=2, fy=2,
-                                  interpolation=cv2.INTER_CUBIC)
-            dilation = cv2.dilate(resizing, kernel, iterations=1)
-            erosion = cv2.erode(dilation, kernel, iterations=2)
+for row in table:
+    for idx in (name_column, point_column):
+        cell = row[idx]
+        if len(cell) == 0:
+            continue
 
-            tmp = bitnot.copy()
-            cv2.rectangle(tmp, (x, y), (x+h, y+w), (0, 255, 0), 4)
-            # cv2.imwrite('test/test'+str(iii)+'.png', tmp)
-            # iii += 1
+        y, x, w, h = cell[0], cell[1], cell[2], cell[3]
+        final_img = bitnot[x:x+h, y:y+w]
 
-            out = ''
-            if cell_idx == 22:
-                out = pytesseract.image_to_string(
-                    erosion, config='-c tessedit_char_whitelist=0123456789 --oem 3 --psm 10')
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 1))
+        border = cv2.copyMakeBorder(
+            final_img, 2, 2, 2, 2, cv2.BORDER_CONSTANT, value=[255, 255])
+        resizing = cv2.resize(border, None, fx=2, fy=2,
+                              interpolation=cv2.INTER_CUBIC)
+        dilation = cv2.dilate(resizing, kernel, iterations=1)
+        erosion = cv2.erode(dilation, kernel, iterations=2)
 
-            if cell_idx == 2:
-                out = pytesseract.image_to_string(
-                    erosion, config='--oem 3 --psm 3', lang='rus')
+        tmp = bitnot.copy()
+        cv2.rectangle(tmp, (x, y), (x+h, y+w), (0, 255, 0), 4)
 
-            if cell_idx == 2 or cell_idx == 22:
-                print(out)
+        out = ''
+        if idx == name_column:
+            out = pytesseract.image_to_string(
+                erosion, config='--oem 3 --psm 10', lang='rus')
+
+        if idx == point_column:
+            out = pytesseract.image_to_string(
+                erosion, config='-c tessedit_char_whitelist=0123456789 --oem 3 --psm 10')
+
+        print(out)
