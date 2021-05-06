@@ -87,7 +87,6 @@ centers.sort()
 table = []
 for row in rows:
     sort_row = [[] for k in range(max_cols)]
-
     for cell in row:
         diff = abs(centers - (cell[0] + cell[2] / 4))
         idx = list(diff).index(min(diff))
