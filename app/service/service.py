@@ -27,4 +27,4 @@ class Server:
         server.start()
         log.info("service is started")
 
-        return server.waitmak_for_termination()
+        return server.wait_for_termination()
