@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import pytesseract
-from typing import List
 
 
 class TextExtractor:
@@ -111,7 +110,7 @@ class TextExtractor:
         return table
 
     @staticmethod
-    def extract_text(proc_image, table: List[List[list]], string_column: int, num_column: int):
+    def extract_text(proc_image, table, string_column: int, num_column: int):
         extracted_text = []
         for row in table:
             if len(row) < string_column or len(row) < num_column:
