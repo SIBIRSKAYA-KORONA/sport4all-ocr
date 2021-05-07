@@ -1,4 +1,4 @@
-from service import service
+from app.service import service
 
 if __name__ == '__main__':
     # TODO: add config

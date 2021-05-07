@@ -1,5 +1,5 @@
-from .ocr_pb2 import PlayerStat, PlayerStats
-from .ocr_pb2_grpc import OcrService
+from .proto.ocr_pb2 import PlayerStat, PlayerStats
+from .proto.ocr_pb2_grpc import OcrService
 
 
 class OcrHandler(OcrService):

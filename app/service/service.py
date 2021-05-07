@@ -1,10 +1,11 @@
 import grpc
 from concurrent import futures
-from handlers.grpc import ocr, ocr_pb2_grpc
+from app.handlers.grpc import ocr
+from app.handlers.grpc.proto import ocr_pb2_grpc
 
 
 class Server:
-    def __init__(self, port, max_workers):
+    def __init__(self, port: int, max_workers: int):
         self.port = port
         self.max_workers = max_workers
 
