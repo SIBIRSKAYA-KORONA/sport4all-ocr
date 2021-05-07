@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from .ocr_pb2 import Image, PlayerStats
+from handlers.grpc import ocr_pb2 as handlers_dot_grpc_dot_ocr__pb2
 
 
 class OcrServiceStub(object):
@@ -16,8 +16,8 @@ class OcrServiceStub(object):
         """
         self.GetStatsByImage = channel.unary_unary(
             '/proto.OcrService/GetStatsByImage',
-            request_serializer=Image.SerializeToString,
-            response_deserializer=PlayerStats.FromString,
+            request_serializer=handlers_dot_grpc_dot_ocr__pb2.Image.SerializeToString,
+            response_deserializer=handlers_dot_grpc_dot_ocr__pb2.PlayerStats.FromString,
         )
 
 
@@ -35,8 +35,8 @@ def add_OcrServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         'GetStatsByImage': grpc.unary_unary_rpc_method_handler(
             servicer.GetStatsByImage,
-            request_deserializer=Image.FromString,
-            response_serializer=PlayerStats.SerializeToString,
+            request_deserializer=handlers_dot_grpc_dot_ocr__pb2.Image.FromString,
+            response_serializer=handlers_dot_grpc_dot_ocr__pb2.PlayerStats.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -61,7 +61,7 @@ class OcrService(object):
                         timeout=None,
                         metadata=None):
         return grpc.experimental.unary_unary(request, target, '/proto.OcrService/GetStatsByImage',
-                                             Image.SerializeToString,
-                                             PlayerStats.FromString,
+                                             handlers_dot_grpc_dot_ocr__pb2.Image.SerializeToString,
+                                             handlers_dot_grpc_dot_ocr__pb2.PlayerStats.FromString,
                                              options, channel_credentials,
                                              insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
