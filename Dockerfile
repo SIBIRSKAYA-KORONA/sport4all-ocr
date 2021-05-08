@@ -1,4 +1,4 @@
-FROM python:3.10-rc-buster
+FROM python:3.10-rc-slim-buster
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y ffmpeg libsm6 libxext6 tesseract-ocr te
 
 COPY . .
 
-RUN pip3 install --upgrade pip setuptools wheel
+# RUN pip3 install --upgrade pip setuptools wheel
 
 RUN pip3 install -r requirements.txt
 
