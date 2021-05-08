@@ -16,7 +16,7 @@ class OcrHandler(OcrService):
 
         proto_stats = PlayerStats()
         for stat in stats:
-            proto_stat = proto_stats.add()
+            proto_stat = proto_stats.stats.add()
             proto_stat.name = stat['name']
             proto_stat.surname = stat['surname']
             proto_stat.score = stat['score']
