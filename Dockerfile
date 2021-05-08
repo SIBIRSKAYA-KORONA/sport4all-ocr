@@ -1,8 +1,9 @@
-FROM python:3.9.5
+FROM python:3.9.5-alpine
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y ffmpeg libsm6 libxext6 tesseract-ocr tesseract-ocr-eng tesseract-ocr-rus
+RUN apk update && apk upgrade && apk --update add gcc g++ make cmake openssl-dev linux-headers
+RUN apk add tesseract-ocr tesseract-ocr-data-rus
 
 COPY . .
 
