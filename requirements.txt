@@ -1,7 +1,7 @@
-requests==2.22.0
-numpy==1.19.2
-opencv-python==4.5.1.48
+requests==2.25.1
+numpy==1.20.2
+opencv-python==4.5.2.52
 grpcio==1.37.1
 grpcio-tools==1.37.1
 pytesseract==0.3.7
-protobuf==3.15.8
+protobuf==3.16.0
