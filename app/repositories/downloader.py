@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import requests
+from app.common.logger import log
 
 
 class Downloader:
@@ -13,7 +14,9 @@ class Downloader:
         if not response.ok:
             return None
 
-        arr = np.asarray(bytearray(response.raw.read()), dtype=np.uint8)
-        image = cv2.imdecode(arr, cv2.THRESH_BINARY)
-
-        return image
+        arr = np.asarray(bytearray(response.content), dtype=np.uint8)
+        try:
+            return cv2.imdecode(arr, cv2.THRESH_BINARY)
+        except Exception as e:
+            log.error('error while decode image: %s', e)
+            return None

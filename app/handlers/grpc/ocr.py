@@ -13,4 +13,5 @@ class OcrHandler(OcrService):
         result = self.ocr.extract(
             request.path, request.player_column, request.score_column)
         log.info('extracted data: %s', result)
+
         return PlayerStats(**result)

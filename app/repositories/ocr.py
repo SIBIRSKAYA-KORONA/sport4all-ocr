@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import pytesseract
+from app.common.logger import log
 
 
 class TextExtractor:
@@ -144,7 +145,10 @@ class TextExtractor:
                 if idx == num_column:
                     score = pytesseract.image_to_string(
                         erosion, config='-c tessedit_char_whitelist=0123456789 --oem 3 --psm 10')
-                    item['score'] = int(score)
+                    try:
+                        item['score'] = int(score)
+                    except Exception as e:
+                        log.debug('error while cast score to int: %s', e)
 
             if len(item) == 3:
                 extracted_text.append(item)
