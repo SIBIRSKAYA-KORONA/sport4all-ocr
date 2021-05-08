@@ -9,4 +9,7 @@ class OcrUseCase:
 
     def extract(self, url: str, string_column: int, num_column: int):
         image = self.downloader.download(url)
-        return self.text_extractor.extract(image, string_column, num_column)
+        if image is not None:
+            return self.text_extractor.extract(image, string_column, num_column)
+
+        return []
