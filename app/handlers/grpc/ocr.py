@@ -10,8 +10,15 @@ class OcrHandler(OcrService):
 
     def GetStatsByImage(self, request, context):
         log.info('received request: %s', request)
-        result = self.ocr.extract(
+        stats = self.ocr.extract(
             request.path, request.player_column, request.score_column)
-        log.info('extracted data: %s', result)
+        log.info('extracted %d records', len(stats))
 
-        return PlayerStats(**result)
+        proto_stats = PlayerStats()
+        for stat in stats:
+            proto_stat = stats.add()
+            proto_stat.name = stat['name']
+            proto_stat.surname = stat['surname']
+            proto_stat.score = stat['score']
+
+        return proto_stats
