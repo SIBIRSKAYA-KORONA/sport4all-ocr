@@ -146,6 +146,7 @@ class TextExtractor:
                     score = pytesseract.image_to_string(
                         erosion, config='-c tessedit_char_whitelist=0123456789 --oem 3 --psm 10')
                     try:
+                        print(score)
                         item['score'] = int(score)
                     except Exception as e:
                         log.debug('error while cast score to int: %s', e)
