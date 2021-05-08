@@ -16,9 +16,7 @@ class Downloader:
 
         arr = np.asarray(bytearray(response.content), dtype=np.uint8)
         try:
-            image = cv2.imdecode(arr, cv2.THRESH_BINARY)
+            return cv2.imdecode(arr, cv2.THRESH_BINARY)
         except Exception as e:
             log.error('error while decode image: %s', e)
             return None
-
-        return image
