@@ -150,6 +150,7 @@ class TextExtractor:
                     except Exception as e:
                         log.debug('error while cast score to int: %s', e)
 
+            log.debug('extracted item: %s', item)
             if len(item) == 3:
                 extracted_text.append(item)
 
